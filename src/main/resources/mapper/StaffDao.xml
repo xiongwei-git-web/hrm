@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.StaffDao">
+
+    <resultMap type="com.entity.Staff" id="StaffMap">
+        <result property="sId" column="s_id" jdbcType="INTEGER"/>
+        <result property="sName" column="s_name" jdbcType="VARCHAR"/>
+        <result property="sAge" column="s_age" jdbcType="VARCHAR"/>
+        <result property="sPhone" column="s_phone" jdbcType="VARCHAR"/>
+        <result property="sEmail" column="s_email" jdbcType="VARCHAR"/>
+        <result property="sPostid" column="s_postid" jdbcType="INTEGER"/>
+        <result property="sEducation" column="s_education" jdbcType="VARCHAR"/>
+        <result property="sUserid" column="s_userid" jdbcType="VARCHAR"/>
+        <result property="sSectionid" column="s_sectionid" jdbcType="INTEGER"/>
+        <result property="sSite" column="s_site" jdbcType="VARCHAR"/>
+        <result property="sDate" column="s_date" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="StaffMap">
+        select
+          s_id, s_name, s_age, s_phone, s_email, s_postid, s_education, s_userid, s_sectionid, s_site, s_date
+        from personnel.staff
+        where s_id = #{sId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="StaffMap">
+        select
+          s_id, s_name, s_age, s_phone, s_email, s_postid, s_education, s_userid, s_sectionid, s_site, s_date
+        from personnel.staff
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="StaffMap">
+        select
+          s_id, s_name, s_age, s_phone, s_email, s_postid, s_education, s_userid, s_sectionid, s_site, s_date
+        from personnel.staff
+        <where>
+            <if test="sId != null">
+                and s_id = #{sId}
+            </if>
+            <if test="sName != null and sName != ''">
+                and s_name = #{sName}
+            </if>
+            <if test="sAge != null and sAge != ''">
+                and s_age = #{sAge}
+            </if>
+            <if test="sPhone != null and sPhone != ''">
+                and s_phone = #{sPhone}
+            </if>
+            <if test="sEmail != null and sEmail != ''">
+                and s_email = #{sEmail}
+            </if>
+            <if test="sPostid != null">
+                and s_postid = #{sPostid}
+            </if>
+            <if test="sEducation != null and sEducation != ''">
+                and s_education = #{sEducation}
+            </if>
+            <if test="sUserid != null and sUserid != ''">
+                and s_userid = #{sUserid}
+            </if>
+            <if test="sSectionid != null">
+                and s_sectionid = #{sSectionid}
+            </if>
+            <if test="sSite != null and sSite != ''">
+                and s_site = #{sSite}
+            </if>
+            <if test="sDate != null">
+                and s_date = #{sDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="sId" useGeneratedKeys="true">
+        insert into personnel.staff(s_name, s_age, s_phone, s_email, s_postid, s_education, s_userid, s_sectionid, s_site, s_date)
+        values (#{sName}, #{sAge}, #{sPhone}, #{sEmail}, #{sPostid}, #{sEducation}, #{sUserid}, #{sSectionid}, #{sSite}, #{sDate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update personnel.staff
+        <set>
+            <if test="sName != null and sName != ''">
+                s_name = #{sName},
+            </if>
+            <if test="sAge != null and sAge != ''">
+                s_age = #{sAge},
+            </if>
+            <if test="sPhone != null and sPhone != ''">
+                s_phone = #{sPhone},
+            </if>
+            <if test="sEmail != null and sEmail != ''">
+                s_email = #{sEmail},
+            </if>
+            <if test="sPostid != null">
+                s_postid = #{sPostid},
+            </if>
+            <if test="sEducation != null and sEducation != ''">
+                s_education = #{sEducation},
+            </if>
+            <if test="sUserid != null and sUserid != ''">
+                s_userid = #{sUserid},
+            </if>
+            <if test="sSectionid != null">
+                s_sectionid = #{sSectionid},
+            </if>
+            <if test="sSite != null and sSite != ''">
+                s_site = #{sSite},
+            </if>
+            <if test="sDate != null">
+                s_date = #{sDate},
+            </if>
+        </set>
+        where s_id = #{sId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from personnel.staff where s_id = #{sId}
+    </delete>
+
+</mapper>
