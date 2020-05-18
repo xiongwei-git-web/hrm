@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.Userdao">
+    <resultMap id="users" type="com.entity.Users">
+        <id property="uId" column="u_id" ></id>
+        <result property="uLogin" column="u_login" ></result>
+        <result property="uPass" column="u_pass"></result>
+        <result property="uState" column="u_state" ></result>
+        <result property="uName" column="u_name" ></result>
+        <result property="uDate" column="u_date" ></result>
+
+    </resultMap>
+    <select id="selectall" resultType="com.entity.Users" resultMap="users">
+        select * from users
+    </select>
+    <select id="login" resultType="com.entity.Users" resultMap="users">
+    select  * from users where u_login=#{user} and u_pass=#{pass}
+    </select>
+    <select id="selectone" resultType="com.entity.Users" resultMap="users">
+    select  *from users where u_id=${id}
+    </select>
+    <select id="selectname" resultType="com.entity.Users" resultMap="users">
+        select  *from users where u_name like #{name}
+    </select>
+    <select id="limetpage" resultType="com.entity.Users" resultMap="users">
+        select  *from  users limit #{start},#{pagesize}
+    </select>
+    <insert id="add" >
+        insert  into users values (null,#{login},#{pass},#{state},#{name},#{date})
+    </insert>
+    <update id="update" >
+        update users set u_login()=#{login} ,u_pass=#{pass},u_state=#{state},u_name=#{name} where u_id=#{id}
+    </update>
+    <delete id=" delete">
+        delete from users where u_id=#{id}
+    </delete>
+
+</mapper>

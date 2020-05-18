@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.Sectiondao">
+     <select id="selectall" resultType="com.entity.Section">
+         select *from section
+     </select>
+    <select id="selectname" resultType="com.entity.Section">
+        select  *from  section where 1=1
+        <if test="sName!=null and sName!=''">
+            and s_name like concat ('%',#{sName},'%')
+        </if>
+        <if test="sId!=null ">
+        and s_id=${sId}
+        </if>
+
+    </select>
+    <select id="limeitpage" resultType="com.entity.Section">
+        select *from section where s_id limit #{start},#{pagesize}
+    </select>
+   <select id="selectone" resultType="com.entity.Section">
+       select  *from section where s_id=#{id}
+   </select>
+    <insert id="add">
+        insert  into section values(null,#{sName},#{sShow})
+    </insert>
+    <update id="update">
+        update section
+        <set>
+            <if test="sName !=null and sName!=''">
+               s_name=#{sName},
+            </if>
+            <if test="sShow!=null and sShow!=''">
+                s_show=#{sShow},
+            </if>
+        </set>
+        where s_id=#{sId}
+    </update>
+    <delete id="delete">
+        delete  from section where s_id=#{sId}
+    </delete>
+</mapper>
