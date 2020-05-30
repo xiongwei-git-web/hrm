@@ -13,6 +13,6 @@ public interface Userdao {
     public  int  add(Users users);
     public  int  update(Users users);
     public  int  delete(Integer id);
-    public List<Users> selectname(String name);
+    public List<Users> selectname(Users users);
     public  List <Users> limetpage(@Param("start") Integer start, @Param("pagesize") Integer pagesize);
 }

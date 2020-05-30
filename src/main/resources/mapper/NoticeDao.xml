@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.NoticeDao">
+
+    <resultMap type="com.entity.Notice" id="NoticeMap">
+        <result property="nId" column="n_id" jdbcType="INTEGER"/>
+        <result property="nName" column="n_name" jdbcType="VARCHAR"/>
+        <result property="nShow" column="n_show" jdbcType="VARCHAR"/>
+        <result property="nDate" column="n_date" jdbcType="OTHER"/>
+        <result property="nPerpson" column="n_perpson" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NoticeMap">
+        select
+          n_id, n_name, n_show, n_date, n_perpson
+        from personnel.notice
+        where n_id = #{nId}
+    </select>
+
+
+    <select id="selectall" resultMap="NoticeMap">
+        select
+          n_id, n_name, n_show, n_date, n_perpson
+        from personnel.notice
+
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="NoticeMap">
+        select
+          n_id, n_name, n_show, n_date, n_perpson
+        from personnel.notice
+        <where>
+            <if test="nId != null">
+                and n_id = #{nId}
+            </if>
+            <if test="nName != null and nName != ''">
+                 and n_name like concat ('%',#{nName},'%')
+            </if>
+            <if test="nShow != null and nShow != ''">
+                and n_show like concat ('%',#{nShow},'%')
+            </if>
+            <if test="nDate != null">
+                and n_date = #{nDate}
+            </if>
+            <if test="nPerpson != null and nPerpson != ''">
+                and n_perpson = #{nPerpson}
+            </if>
+
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="nId" useGeneratedKeys="true">
+        insert into personnel.notice(n_name, n_show, n_date, n_perpson)
+        values (#{nName}, #{nShow}, #{nDate}, #{nPerpson})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update personnel.notice
+        <set>
+            <if test="nName != null and nName != ''">
+                n_name = #{nName},
+            </if>
+            <if test="nShow != null and nShow != ''">
+                n_show = #{nShow},
+            </if>
+            <if test="nDate != null">
+                n_date = #{nDate},
+            </if>
+            <if test="nPerpson != null and nPerpson != ''">
+                n_perpson = #{nPerpson},
+            </if>
+        </set>
+        where n_id = #{nId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from personnel.notice where n_id = #{nId}
+    </delete>
+
+</mapper>

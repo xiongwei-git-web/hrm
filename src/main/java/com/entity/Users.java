@@ -1,5 +1,8 @@
 package com.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -11,7 +14,7 @@ public class Users {
     private String uLogin;//账号
     private String uPass;//密码
     private String uName;//姓名
-    private Date uDate;//创建时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd") private Date uDate;//创建时间
     private String uState;//账号状态
 
     public String getuId() {

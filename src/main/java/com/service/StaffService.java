@@ -10,46 +10,20 @@ import java.util.List;
  * @since 2020-05-14 17:33:07
  */
 public interface StaffService {
+    public  Staff queryById(Integer sId);
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param sId 主键
-     * @return 实例对象
-     */
-    Staff queryById(Integer sId);
+    public List<Staff> selecatname(Staff staff,Integer pagenum,Integer pagesze);
 
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
-    List<Staff> queryAllByLimit(int offset, int limit);
 
-    /**
-     * 新增数据
-     *
-     * @param staff 实例对象
-     * @return 实例对象
-     */
-    Staff insert(Staff staff);
+    public List<Staff> queryAll(Integer pagenum,Integer pagesze);
+    public boolean  deletes(Integer [] ids) throws Exception;
 
-    /**
-     * 修改数据
-     *
-     * @param staff 实例对象
-     * @return 实例对象
-     */
-    Staff update(Staff staff);
+    public  int insert(Staff staff);
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param sId 主键
-     * @return 是否成功
-     */
-    boolean deleteById(Integer sId);
+
+    public int update(Staff staff);
+
+
+    public int deleteById(Integer sId);
 
 }

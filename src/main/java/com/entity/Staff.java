@@ -1,6 +1,10 @@
 package com.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * (Staff)实体类
@@ -22,7 +26,9 @@ public class Staff implements Serializable {
     private String sEmail;
     
     private Integer sPostid;
-    
+
+    private  Post  post;
+    private  Section  section;
     private String sEducation;
     
     private String sUserid;
@@ -30,96 +36,133 @@ public class Staff implements Serializable {
     private Integer sSectionid;
     
     private String sSite;
-    
-    private Object sDate;
 
+      private   @DateTimeFormat(pattern = "yyyy-MM-dd") Date sDate;
 
-    public Integer getSId() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getsId() {
         return sId;
     }
 
-    public void setSId(Integer sId) {
+    public void setsId(Integer sId) {
         this.sId = sId;
     }
 
-    public String getSName() {
+    public String getsName() {
         return sName;
     }
 
-    public void setSName(String sName) {
+    public void setsName(String sName) {
         this.sName = sName;
     }
 
-    public String getSAge() {
+    public String getsAge() {
         return sAge;
     }
 
-    public void setSAge(String sAge) {
+    public void setsAge(String sAge) {
         this.sAge = sAge;
     }
 
-    public String getSPhone() {
+    public String getsPhone() {
         return sPhone;
     }
 
-    public void setSPhone(String sPhone) {
+    public void setsPhone(String sPhone) {
         this.sPhone = sPhone;
     }
 
-    public String getSEmail() {
+    public String getsEmail() {
         return sEmail;
     }
 
-    public void setSEmail(String sEmail) {
+    public void setsEmail(String sEmail) {
         this.sEmail = sEmail;
     }
 
-    public Integer getSPostid() {
+    public Integer getsPostid() {
         return sPostid;
     }
 
-    public void setSPostid(Integer sPostid) {
+    public void setsPostid(Integer sPostid) {
         this.sPostid = sPostid;
     }
 
-    public String getSEducation() {
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
+    }
+
+    public String getsEducation() {
         return sEducation;
     }
 
-    public void setSEducation(String sEducation) {
+    public void setsEducation(String sEducation) {
         this.sEducation = sEducation;
     }
 
-    public String getSUserid() {
+    public String getsUserid() {
         return sUserid;
     }
 
-    public void setSUserid(String sUserid) {
+    public void setsUserid(String sUserid) {
         this.sUserid = sUserid;
     }
 
-    public Integer getSSectionid() {
+    public Integer getsSectionid() {
         return sSectionid;
     }
 
-    public void setSSectionid(Integer sSectionid) {
+    public void setsSectionid(Integer sSectionid) {
         this.sSectionid = sSectionid;
     }
 
-    public String getSSite() {
+    public String getsSite() {
         return sSite;
     }
 
-    public void setSSite(String sSite) {
+    public void setsSite(String sSite) {
         this.sSite = sSite;
     }
 
-    public Object getSDate() {
+    public Date getsDate() {
         return sDate;
     }
 
-    public void setSDate(Object sDate) {
+    public void setsDate(Date sDate) {
         this.sDate = sDate;
     }
 
+    @Override
+    public String toString() {
+        return "Staff{" +
+                "sId=" + sId +
+                ", sName='" + sName + '\'' +
+                ", sAge='" + sAge + '\'' +
+                ", sPhone='" + sPhone + '\'' +
+                ", sEmail='" + sEmail + '\'' +
+                ", sPostid=" + sPostid +
+                ", post=" + post +
+                ", section=" + section +
+                ", sEducation='" + sEducation + '\'' +
+                ", sUserid='" + sUserid + '\'' +
+                ", sSectionid=" + sSectionid +
+                ", sSite='" + sSite + '\'' +
+                ", sDate=" + sDate +
+                '}';
+    }
 }

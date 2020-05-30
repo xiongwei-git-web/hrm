@@ -3,8 +3,8 @@
 <mapper namespace="com.dao.StaffDao">
 
     <resultMap type="com.entity.Staff" id="StaffMap">
-        <result property="sId" column="s_id" jdbcType="INTEGER"/>
-        <result property="sName" column="s_name" jdbcType="VARCHAR"/>
+        <result property="sId" column="id" jdbcType="INTEGER"/>
+        <result property="sName" column="name" jdbcType="VARCHAR"/>
         <result property="sAge" column="s_age" jdbcType="VARCHAR"/>
         <result property="sPhone" column="s_phone" jdbcType="VARCHAR"/>
         <result property="sEmail" column="s_email" jdbcType="VARCHAR"/>
@@ -14,66 +14,68 @@
         <result property="sSectionid" column="s_sectionid" jdbcType="INTEGER"/>
         <result property="sSite" column="s_site" jdbcType="VARCHAR"/>
         <result property="sDate" column="s_date" jdbcType="OTHER"/>
-    </resultMap>
-
+        <association property="post" javaType="com.entity.Post">
+            <id column="p_id" property="pId"></id>
+            <result column="pname" property="pName"/>
+            <result column="p_show" property="pShow"/>
+        </association>
+        <association property="section" javaType="com.entity.Section">
+            <id column="seid" property="sId"/>
+            <result property="sName" column="sname"/>
+            <result property="sShow" column="s_show"/>
+        </association>
+     </resultMap>
+    <sql id="staff" >
+        staff.s_id as id ,staff.s_name as name, s_age, s_phone, s_email, s_postid, s_education, s_userid, s_sectionid, s_site, s_date
+    </sql>
     <!--查询单个-->
     <select id="queryById" resultMap="StaffMap">
         select
-          s_id, s_name, s_age, s_phone, s_email, s_postid, s_education, s_userid, s_sectionid, s_site, s_date
-        from personnel.staff
-        where s_id = #{sId}
-    </select>
-
-    <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="StaffMap">
-        select
-          s_id, s_name, s_age, s_phone, s_email, s_postid, s_education, s_userid, s_sectionid, s_site, s_date
-        from personnel.staff
-        limit #{offset}, #{limit}
+        <include refid="staff"></include>,post.p_name AS pname ,
+        section.s_name AS sname
+        FROM staff
+        INNER JOIN post ON staff.s_postid=post.p_id
+        INNER JOIN section ON staff.s_sectionid=section.s_id
+        where staff.s_id = #{sId}
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="StaffMap">
         select
-          s_id, s_name, s_age, s_phone, s_email, s_postid, s_education, s_userid, s_sectionid, s_site, s_date
-        from personnel.staff
+        <include refid="staff"></include>,post.p_name AS pname ,
+        section.s_name AS sname
+        FROM staff
+        INNER JOIN post ON staff.s_postid=post.p_id
+        INNER JOIN section ON staff.s_sectionid=section.s_id
+    </select>
+    <select id="selecatname" resultMap="StaffMap">
+        select
+        <include refid="staff"></include>,post.p_name AS pname ,
+        section.s_name AS sname
+        FROM staff
+        INNER JOIN post ON staff.s_postid=post.p_id
+        INNER JOIN section ON staff.s_sectionid=section.s_id
         <where>
-            <if test="sId != null">
-                and s_id = #{sId}
+            <if test="sName!=null and sName!=''">
+                and staff.s_name like concat ('%',#{sName},'%')
             </if>
-            <if test="sName != null and sName != ''">
-                and s_name = #{sName}
+            <if test="sAge!=null and sAge!=''">
+                and s_age=#{sAge}
             </if>
-            <if test="sAge != null and sAge != ''">
-                and s_age = #{sAge}
+            <if test="sPhone!=null and sPhone!=''">
+                and s_phone like concat ('%',#{sPhone},'%')
             </if>
-            <if test="sPhone != null and sPhone != ''">
-                and s_phone = #{sPhone}
+            <if test="sPostid !=null and sPostid!=0">
+                and staff.s_postid=#{sPostid}
             </if>
-            <if test="sEmail != null and sEmail != ''">
-                and s_email = #{sEmail}
+            <if test="sUserid !=null and sUserid!=''">
+                and s_userid=#{sUserid}
             </if>
-            <if test="sPostid != null">
-                and s_postid = #{sPostid}
-            </if>
-            <if test="sEducation != null and sEducation != ''">
-                and s_education = #{sEducation}
-            </if>
-            <if test="sUserid != null and sUserid != ''">
-                and s_userid = #{sUserid}
-            </if>
-            <if test="sSectionid != null">
-                and s_sectionid = #{sSectionid}
-            </if>
-            <if test="sSite != null and sSite != ''">
-                and s_site = #{sSite}
-            </if>
-            <if test="sDate != null">
-                and s_date = #{sDate}
+            <if test="sSectionid !=null and  sSectionid!=0">
+                and staff.s_sectionid=#{sSectionid}
             </if>
         </where>
     </select>
-
     <!--新增所有列-->
     <insert id="insert" keyProperty="sId" useGeneratedKeys="true">
         insert into personnel.staff(s_name, s_age, s_phone, s_email, s_postid, s_education, s_userid, s_sectionid, s_site, s_date)

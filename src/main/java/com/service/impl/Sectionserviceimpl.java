@@ -3,9 +3,11 @@ package com.service.impl;
 import com.dao.Sectiondao;
 
 import com.entity.Section;
+import com.github.pagehelper.PageHelper;
 import com.service.Sectionservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
@@ -17,7 +19,14 @@ import java.util.List;
 @Service("sectionservice")
 public class Sectionserviceimpl implements Sectionservice {
     @Autowired
-    Sectiondao sectiondao;
+    private Sectiondao sectiondao;
+
+    @Override
+    public List<Section> selectall(Integer pagenum,Integer pagesize) {
+        PageHelper.startPage(pagenum,pagesize);
+        List<Section> list=sectiondao.selectall();
+        return list;
+    }
 
     @Override
     public List<Section> selectall() {
@@ -26,11 +35,13 @@ public class Sectionserviceimpl implements Sectionservice {
     }
 
     @Override
-    public List<Section> seectname(Section section) {
-        List<Section> list=new ArrayList<>();
-         list=sectiondao.selectname(section);
+    public List<Section> seectname(Section section, Integer pagenum, Integer pagesize) {
+        PageHelper.startPage(pagenum,pagesize);
+        List<Section> list=sectiondao.selectname(section);
         return list;
+
     }
+
 
     @Override
     public List<Section> selectpage(Integer pagenub, Integer pagesize) {
@@ -73,5 +84,18 @@ public class Sectionserviceimpl implements Sectionservice {
             return true;
         }
         return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean deletes(Integer[] ids) throws Exception {
+        int deletecount=0;
+        for(int i=0;i<ids.length;i++){
+            deletecount+=sectiondao.delete(ids[i]);
+        }
+        if(deletecount<ids.length){
+            throw  new Exception("删除失败");
+        }
+        return true;
     }
 }

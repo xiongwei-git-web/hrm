@@ -21,18 +21,38 @@
     select  *from users where u_id=${id}
     </select>
     <select id="selectname" resultType="com.entity.Users" resultMap="users">
-        select  *from users where u_name like #{name}
+        select  *from users where 1=1
+         <if test="uName!=null" >
+          and  u_name like concat ('%',#{uName},'%')
+         </if>
+         <if test="uState!=null">
+             and u_state=#{uState}
+         </if>
     </select>
     <select id="limetpage" resultType="com.entity.Users" resultMap="users">
         select  *from  users limit #{start},#{pagesize}
     </select>
     <insert id="add" >
-        insert  into users values (null,#{login},#{pass},#{state},#{name},#{date})
+        insert  into users values (null,#{uLogin},#{uPass},#{uState},#{uName},#{uDate})
     </insert>
     <update id="update" >
-        update users set u_login()=#{login} ,u_pass=#{pass},u_state=#{state},u_name=#{name} where u_id=#{id}
+        update users <set>
+        <if test="uLogin!=null and uLogin!=''">
+            u_login=#{uLogin},
+        </if>
+        <if test="uPass!=null and uPass!=''">
+            u_pass=#{uPass},
+        </if>
+        <if test="uState!=null">
+            u_state=#{uState},
+        </if>
+        <if test="uName!=null and uName!=''">
+            u_name=#{uName},
+        </if>
+    </set>
+     where u_id=#{uId}
     </update>
-    <delete id=" delete">
+    <delete id="delete">
         delete from users where u_id=#{id}
     </delete>
 

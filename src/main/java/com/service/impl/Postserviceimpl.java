@@ -3,8 +3,11 @@ package com.service.impl;
 import com.dao.Postdao;
 
 import com.entity.Post;
+import com.github.pagehelper.PageHelper;
 import com.service.Postservice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -14,16 +17,24 @@ import java.util.List;
  */
 @Service("Postservice")
 public class Postserviceimpl implements Postservice {
-    Postdao postdao;
+    @Autowired
+    private Postdao postdao;
     @Override
-    public List<Post> selectall() {
+    public List<Post> selectall(Integer pagenub,Integer pagesize) {
+        PageHelper.startPage(pagenub,pagesize);
         List<Post> list=postdao.selectall();
-
         return list;
     }
 
     @Override
-    public List<Post> seectname(Post post) {
+    public List<Post> selectall() {
+        List<Post> list=postdao.selectall();
+        return list;
+    }
+
+    @Override
+    public List<Post> seectname(Post post,Integer pagenub,Integer pagesize) {
+        PageHelper.startPage(pagenub,pagesize);
         List<Post> list =postdao.seectname(post);
 
         return list;
@@ -75,5 +86,20 @@ public class Postserviceimpl implements Postservice {
             return true;
         }
         return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean deletes(Integer[] ids) throws Exception {
+        int i=0;
+        int deletecount=0;
+        for(i=0;i<ids.length;i++){
+            int mun=postdao.delete(ids[i]);
+            deletecount+=mun;
+        }
+        if(deletecount<ids.length){
+            throw  new Exception("删除失败");
+        }
+        return true;
     }
 }

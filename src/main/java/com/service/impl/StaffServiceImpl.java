@@ -2,9 +2,11 @@ package com.service.impl;
 
 import com.entity.Staff;
 import com.dao.StaffDao;
+import com.github.pagehelper.PageHelper;
 import com.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.annotation.Resources;
@@ -18,64 +20,58 @@ import java.util.List;
  */
 @Service("staffService")
 public class StaffServiceImpl implements StaffService {
-    @Resource
-    private StaffDao staffDao;
-
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param sId 主键
-     * @return 实例对象
-     */
+    @Autowired
+    private  StaffDao staffDao;
     @Override
     public Staff queryById(Integer sId) {
-        return this.staffDao.queryById(sId);
+
+        return staffDao.queryById(sId);
     }
 
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
     @Override
-    public List<Staff> queryAllByLimit(int offset, int limit) {
-        return this.staffDao.queryAllByLimit(offset, limit);
+    public List<Staff> selecatname(Staff staff,Integer pagenum,Integer pagesze) {
+        PageHelper.startPage(pagenum,pagesze);
+        List<Staff> list= staffDao.selecatname(staff);
+        return list;
     }
 
-    /**
-     * 新增数据
-     *
-     * @param staff 实例对象
-     * @return 实例对象
-     */
     @Override
-    public Staff insert(Staff staff) {
-        this.staffDao.insert(staff);
-        return staff;
+    public List<Staff> queryAll(Integer pagenum,Integer pagesze) {
+        PageHelper.startPage(pagenum,pagesze);
+        List<Staff> list= staffDao.queryAll();
+        return list;
     }
 
-    /**
-     * 修改数据
-     *
-     * @param staff 实例对象
-     * @return 实例对象
-     */
     @Override
-    public Staff update(Staff staff) {
-        this.staffDao.update(staff);
-        return this.queryById(staff.getSId());
+    @Transactional
+    public boolean deletes(Integer[] ids) throws Exception {
+
+        int i=0;
+        int deletecount=0;
+        for(i=0;i<ids.length;i++){
+            int mun=staffDao.deleteById(ids[i]);
+            deletecount+=mun;
+        }
+        if(deletecount<ids.length){
+            throw  new Exception("删除失败");
+        }
+        return true;
     }
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param sId 主键
-     * @return 是否成功
-     */
     @Override
-    public boolean deleteById(Integer sId) {
-        return this.staffDao.deleteById(sId) > 0;
+    public int insert(Staff staff) {
+
+        return staffDao.insert(staff);
     }
+
+    @Override
+    public int update(Staff staff) {
+        return staffDao.update(staff);
+    }
+
+    @Override
+    public int deleteById(Integer sId) {
+        return staffDao.deleteById(sId);
+    }
+
 }
