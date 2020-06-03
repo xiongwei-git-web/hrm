@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.RoleDao">
+
+    <resultMap type="com.entity.Role" id="RoleMap">
+        <result property="rId" column="r_id" jdbcType="INTEGER"/>
+        <result property="rName" column="r_name" jdbcType="VARCHAR"/>
+        <result property="rRemark" column="r_remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="RoleMap">
+        select
+          r_id, r_name, r_remark
+        from personnel.role
+        where r_id = #{rId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="RoleMap">
+        select
+          r_id, r_name, r_remark
+        from personnel.role
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="RoleMap">
+        select
+          r_id, r_name, r_remark
+        from personnel.role
+        <where>
+            <if test="rId != null">
+                and r_id = #{rId}
+            </if>
+            <if test="rName != null and rName != ''">
+                and r_name = #{rName}
+            </if>
+            <if test="rRemark != null and rRemark != ''">
+                and r_remark = #{rRemark}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="rId" useGeneratedKeys="true">
+        insert into personnel.role(r_name, r_remark)
+        values (#{rName}, #{rRemark})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update personnel.role
+        <set>
+            <if test="rName != null and rName != ''">
+                r_name = #{rName},
+            </if>
+            <if test="rRemark != null and rRemark != ''">
+                r_remark = #{rRemark},
+            </if>
+        </set>
+        where r_id = #{rId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from personnel.role where r_id = #{rId}
+    </delete>
+
+</mapper>

@@ -4,6 +4,7 @@ import com.alibaba.druid.mock.MockDriver;
 import com.entity.Post;
 import com.github.pagehelper.PageInfo;
 import com.service.Postservice;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,7 @@ public class PostController {
         model.addAttribute("list",pageInfo);
         return "post";
     }
+    @RequiresPermissions("post:add")
     @RequestMapping("add")
     public String add(Post post, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
@@ -44,6 +46,7 @@ public class PostController {
         }
 
     }
+    @RequiresPermissions("post:update")
     @RequestMapping("update")
     public String update(Post post,HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
@@ -58,6 +61,7 @@ public class PostController {
             return "redirect:/post/selectall";
         }
     }
+    @RequiresPermissions("post:delete")
     @RequestMapping("delete")
     @ResponseBody
     public  String delete(Integer id,HttpServletResponse response) {
@@ -73,6 +77,7 @@ public class PostController {
             return "删除失败";
         }
     }
+    @RequiresPermissions("post:deletes")
     @RequestMapping("deletes")
     public  String deletes(Integer[] ids){
         try {
@@ -83,6 +88,7 @@ public class PostController {
             return "redirect:/post/selectall";
         }
     }
+    @RequiresPermissions("post:select")
     @RequestMapping("selectname")
     public  String  selectname(Post post,Model model, @RequestParam(required = false,defaultValue = "1") Integer pagenum, @RequestParam(required = false,defaultValue = "5")Integer pagesize){
         PageInfo<Post> pageInfo=new PageInfo<>(postservice.seectname(post,pagenum,pagesize)) ;

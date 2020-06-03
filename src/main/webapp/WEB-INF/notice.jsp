@@ -11,6 +11,7 @@
     <script type="text/javascript" src="<%request.getContextPath();%>/js/bootstrap.bundle.min.js"></script>
     <!--  -->
 </head>
+
 <body>
 <div class="row border">
     <div class="col-12">
@@ -202,12 +203,14 @@
     function tage1() {
         var li1=document.getElementById("li1");
         var li2=document.getElementById("li2");
-        <c:if test="${list.pageNum<=1}">
-        li1.style.visibility="hidden";
-        </c:if>
-        <c:if test="${list.pageNum==list.pages}">
-        li2.style.visibility="hidden";
-        </c:if>
+        if(${list.pageNum<=1}) {
+            li1.style.visibility = "hidden";
+        }
+
+        if(${list.pageNum==list.pages}){
+            li2.style.visibility="hidden";
+        }
+
     }
 </script>
 </html>

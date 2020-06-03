@@ -6,8 +6,8 @@
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="<%request.getContextPath();%>/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-		<script type="text/javascript" src="%request.getContextPath();%>/js/jquery-3.4.1.min.js"></script>
-		<script type="text/javascript" src="%request.getContextPath();%>/js/bootstrap.bundle.min.js"></script>
+		<script type="text/javascript" src="<%request.getContextPath();%>/js/jquery-3.4.1.min.js"></script>
+		<script type="text/javascript" src="<%request.getContextPath();%>/js/bootstrap.bundle.min.js"></script>
 		<script src="https://kit.fontawesome.com/89ea953a05.js" crossorigin="anonymous"></script>
 		<style type="text/css">
 			*{padding: 0;

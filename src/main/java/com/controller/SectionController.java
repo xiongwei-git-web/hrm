@@ -4,6 +4,7 @@ import com.entity.Section;
 import com.entity.Users;
 import com.github.pagehelper.PageInfo;
 import com.service.Sectionservice;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.aop.framework.AbstractAdvisingBeanPostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,7 @@ public class SectionController {
       model.addAttribute("list",pageInfo);
       return "section";
     }
+    @RequiresPermissions("section:add")
     @RequestMapping("add")
     public String add(Section section, HttpServletResponse response) throws IOException {
       response.setContentType("text/html;charset=utf-8");
@@ -42,6 +44,7 @@ public class SectionController {
         }
 
     }
+    @RequiresPermissions("section:deletes")
     @RequestMapping("deletes")
     public String deletes(Integer[] ids,HttpServletResponse response) throws Exception {
         response.setContentType("text/html;charset=utf-8");
@@ -57,6 +60,7 @@ public class SectionController {
         }
 
     }
+    @RequiresPermissions("section:delete")
     @RequestMapping("delete")
     @ResponseBody
     public String delete(Integer id,HttpServletResponse response){
@@ -67,6 +71,7 @@ public class SectionController {
       }
       return "删除失败";
     }
+    @RequiresPermissions("section:update")
     @RequestMapping("updaet")
     public  String update(Section section,HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
@@ -79,6 +84,7 @@ public class SectionController {
             return "redirect:/section/selectall";
         }
     }
+    @RequiresPermissions("section:select")
     @RequestMapping("selectname")
     public String  selectname(Section section,Model model,@RequestParam(required = false,defaultValue = "1") Integer pagenum, @RequestParam(required = false,defaultValue = "5")Integer pagesize){
         PageInfo<Section> pageInfo=new PageInfo<>(sectionservice.seectname(section,pagenum,pagesize));

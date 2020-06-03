@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:content="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/><!--配置securityManager-->
+        <property name="loginUrl" value="/login.jsp"/><!--指定登陆页-->
+        <property name="unauthorizedUrl" value="/no.jsp" /><!--指定无权限时跳转的页面-->
+        <property name="successUrl" value="/WEB-INF/index.jsp" /><!--指定认证成功后跳转的页面-->
+        <property name="filterChainDefinitions" ><!--配置urL过滤-->
+            <value>
+                /css/**=anon
+                /js/**=anon
+                /user/login=anon
+                /login.jsp=anon
+                /quit=logout
+               /initialize.jsp=anon
+                /**=authc
+            </value>
+        </property>
+    </bean>
+    <!--创建securityManager, web 环境下使用WebSecurityManager-->
+    <bean id="securityManager" class= "org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+    <property name="realm" ref="userRealm"/>
+</bean>
+<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+        <!--创建自定义的realm-->
+<bean id="userRealm" class="com.shiro.Myshiro"></bean>
+</beans>

@@ -5,6 +5,7 @@ import com.entity.Users;
 import com.github.pagehelper.PageInfo;
 import com.service.FilesService;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class FilesController {
         model.addAttribute("list",pageInfo);
         return "files";
     }
+    @RequiresPermissions("files:add")
     @RequestMapping("add")
     public String add(HttpServletRequest request, MultipartFile file, Files files, HttpSession session){
         if(file==null || file.getSize()==0){
@@ -65,6 +67,7 @@ public class FilesController {
         return "redirect:/files/selectall";
     }
     @RequestMapping("download")
+    @RequiresPermissions("files:download")
     public  void   download(HttpServletResponse response,HttpServletRequest request,Integer id){
       Files file=filesService.queryById(id);
       if(file==null){
@@ -87,5 +90,21 @@ public class FilesController {
             e.printStackTrace();
         }
     }
+    @RequestMapping("delete")
+    @RequiresPermissions("files:delete")
+    @ResponseBody
+    public String delete(Integer id,HttpServletRequest request){
+        Files file=filesService.queryById(id);
+        String dir=request.getServletContext().getRealPath("");
+        File files=new File(dir+"/"+file.getfLocat());
+      boolean boo= files.delete();
+        if(boo){
+            filesService.deleteById(id);
+            return "删除成功";
+        }else {
 
+            return "删除失败";
+        }
+
+    }
 }

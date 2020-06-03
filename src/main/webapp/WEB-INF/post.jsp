@@ -13,12 +13,12 @@
 <body>
 <div class="row border">
     <div class="col-12">
-        <h5 class="ml-1">部门管理</h5>
+        <h5 class="ml-1">职位管理</h5>
     </div>
 </div>
 <div class="row  border ">
     <div class="col-2">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" >添加部门</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" >添加职位</button>
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -105,11 +105,11 @@
                             <div class="modal-body">
 
                                 <div class="form-group">
-                                    <label for="text1" class="col-form-label">职位名称</label>
+                                    <label for="text3" class="col-form-label">职位名称</label>
                                     <input type="text"  name="pName" class="form-control" id="text3">
                                 </div>
                                 <div class="form-group">
-                                    <label for="text2" class="col-form-label">职位详情</label>
+                                    <label for="text4" class="col-form-label">职位详情</label>
                                     <input type="text"   class="form-control" name="pShow" id="text4">
                                     <input type="hidden" name="pId" id="text5">
                                 </div>
@@ -176,12 +176,14 @@
     function tage1() {
         var li1=document.getElementById("li1");
         var li2=document.getElementById("li2");
-        <c:if test="${list.pageNum<=1}">
-        li1.style.visibility="hidden";
-        </c:if>
-        <c:if test="${list.pageNum==list.pages}">
-        li2.style.visibility="hidden";
-        </c:if>
+        if(${list.pageNum<=1}) {
+            li1.style.visibility = "hidden";
+        }
+
+        if(${list.pageNum==list.pages}){
+            li2.style.visibility="hidden";
+        }
+
     }
 </script>
 </html>

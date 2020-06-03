@@ -21,13 +21,14 @@
     select  *from users where u_id=${id}
     </select>
     <select id="selectname" resultType="com.entity.Users" resultMap="users">
-        select  *from users where 1=1
-         <if test="uName!=null" >
+        select  *from users <where>
+         <if test="uName!=null and uName!=''" >
           and  u_name like concat ('%',#{uName},'%')
          </if>
-         <if test="uState!=null">
+         <if test="uState!=null and uState!=''">
              and u_state=#{uState}
          </if>
+    </where>
     </select>
     <select id="limetpage" resultType="com.entity.Users" resultMap="users">
         select  *from  users limit #{start},#{pagesize}
@@ -49,11 +50,28 @@
         <if test="uName!=null and uName!=''">
             u_name=#{uName},
         </if>
+        <if test="uDate!=null">
+            u_date=#{uDate},
+        </if>
     </set>
      where u_id=#{uId}
     </update>
     <delete id="delete">
         delete from users where u_id=#{id}
     </delete>
-
+    <select id="querybyusername" resultMap="users">
+        select * from users where u_login=#{uLogin}
+    </select>
+    <select id="queryrolenameByUsername" resultType="String">
+     SELECT role.r_name FROM role
+        WHERE r_id IN(SELECT r_id FROM role_users WHERE role_users.u_id =(SELECT users.u_id FROM users WHERE u_login = #{uLogin}))
+    </select>
+    <select id="queryfunameByUsername" resultType="String">
+           SELECT f.f_name FROM fun f
+       INNER  JOIN role_fun ON role_fun.f_id =f.f_id
+       INNER  JOIN role r ON r.r_id= role_fun.r_id
+       INNER  JOIN role_users ON role_users.r_id= r.r_id
+       INNER  JOIN users u ON u.u_id =role_users.u_id
+       WHERE u.u_login=#{uLogin}
+    </select>
 </mapper>

@@ -8,6 +8,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +33,7 @@
             </td>
         </tr>
         <tr>
-            <td><span class="text-primary">创建时间：</span><span class="text-danger">${user.uDate}</span></td>
+            <td><span class="text-primary">创建时间：</span><span class="text-danger"><fmt:formatDate value="${user.uDate}" pattern="yyyy-MM-dd"></fmt:formatDate></span></td>
         </tr>
         </tbody>
     </table>

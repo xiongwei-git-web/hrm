@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="<%request.getContextPath();%>/css/bootstrap.min.css" crossorigin="anonymous">
     <script type="text/javascript" src="<%request.getContextPath();%>/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="<%request.getContextPath();%>/js/bootstrap.bundle.min.js"></script>
+
     <!--  -->
 </head>
 <body>
@@ -45,7 +47,7 @@
                     <tr>
                         <th scope="row"><input type="checkbox" name="ids"  value="${str.fId}" /></th>
                         <td>${str.fName}</td>
-                        <td>${str.fDate}</td>
+                        <td><fmt:formatDate value="${str.fDate}" pattern="yyyy-MM-dd"></fmt:formatDate></td>
                         <td>${str.fPerpson}</td>
                         <td>${str.fShow}</td>
                         <td>${str.fSize}</td>
@@ -66,7 +68,7 @@
     </div>
     <div class="col-8" >
         <ul class="list-inline pagination text-center">
-            <li   class="list-inline-item disabled"><a id="li1" onclick="tage1()" href="/post/selectall?pagenum=${list.pageNum-1}"><i class="fa fa-chevron-left fa-lg"></i>上一页</a></li>
+            <li   class="list-inline-item disabled"><a id="li1" onclick="tage1()" href="/post/selectall?pagenum=${list.pageNum-1}"><i  class="fa fa-chevron-left fa-lg"></i>上一页</a></li>
             <li class="list-inline-item"><a id="li2" onclick="tage1()" href="/post/selectall?pagenum=${list.pageNum+1}"><i class="fa fa-chevron-right fa-lg"></i>下一页 </a></li>
         </ul>
     </div>
@@ -108,7 +110,7 @@
         var id = index.childNodes[1].childNodes[0].value;
 
         table.deleteRow(index.rowIndex);
-        xmlhttp.open("get","/post/delete?id=" + id, true);
+        xmlhttp.open("get","/files/delete?id=" + id, true);
         xmlhttp.send();
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -120,12 +122,14 @@
     function tage1() {
         var li1=document.getElementById("li1");
         var li2=document.getElementById("li2");
-        <c:if test="${list.pageNum<=1}">
-        li1.style.visibility="hidden";
-        </c:if>
-        <c:if test="${list.pageNum==list.pages}">
-        li2.style.visibility="hidden";
-        </c:if>
+        if(${list.pageNum<=1}) {
+            li1.style.visibility = "hidden";
+        }
+
+      if(${list.pageNum==list.pages}){
+          li2.style.visibility="hidden";
+      }
+
     }
 </script>
 </html>

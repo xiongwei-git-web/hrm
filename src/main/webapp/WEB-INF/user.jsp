@@ -73,8 +73,8 @@
 
         <div class="input-group ">
             <span class="input-group-append align-items-center ">搜索：</span>
-            <input type="text" name="name" class="form-control" placeholder="请输入搜索用户的姓名">
-            <input type="text" name="start" class="form-control ml-2" placeholder="请输入搜索用户的状态">
+            <input type="text" name="uName" class="form-control" placeholder="请输入搜索用户的姓名">
+            <input type="text" name="uState" class="form-control ml-2" placeholder="请输入搜索用户的状态">
             <div class="input-group-append">
                 <button type="submit" class="btn btn-primary">搜索</button>
                 <button type="button" class="btn btn-primary ml-3" onclick="deletes()">点我批量删除</button>
@@ -140,6 +140,11 @@
                                                 <label for="text10" class="col-form-label">状态</label>
                                                 <input type="text" class="form-control"   name="uState" id="text10">
                                             </div>
+                                            <div class="form-group">
+
+                                                <label for="text11" class="col-form-label">创建时间</label>
+                                                <input type="text" class="form-control"   name="uDate" id="text11">
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
@@ -182,10 +187,12 @@
       var pass=document.getElementById("text8");
       var state=document.getElementById("text10");
       var id=document.getElementById("text12");
+      var date=document.getElementById("text11");
        user.value = users[3].innerHTML;
        pass.value=users[5].innerHTML;
        name.value=users[7].innerHTML;
        state.value=users[9].innerHTML;
+       date.value=users[11].innerHTML;
        id.value=users[1].childNodes[0].value;
     }
     function deleterow(obj) {
@@ -208,12 +215,14 @@
     function tage1() {
         var li1=document.getElementById("li1");
         var li2=document.getElementById("li2");
-        <c:if test="${list.pageNum<=1}">
-        li1.style.visibility="hidden";
-        </c:if>
-        <c:if test="${list.pageNum==list.pages}">
-        li2.style.visibility="hidden";
-        </c:if>
+        if(${list.pageNum<=1}) {
+            li1.style.visibility = "hidden";
+        }
+
+        if(${list.pageNum==list.pages}){
+            li2.style.visibility="hidden";
+        }
+
     }
 </script>
 </body>

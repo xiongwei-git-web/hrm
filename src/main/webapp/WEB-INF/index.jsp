@@ -26,7 +26,7 @@
 					</ul>
 					<form  action="/user/quit" class="form-inline my-2 my-lg-0">
 						<input class="form-control mr-sm-2"   value="当前用户:${user.uName}" readonly />
-						<a class="btn btn-danger" href="/user/quit" role="button">退出</a>
+						<a class="btn btn-danger" href="/quit" role="button">退出</a>
 					</form>
 				</div>
 			</nav>

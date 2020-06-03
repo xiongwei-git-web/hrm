@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.RoleUsersDao">
+
+    <resultMap type="com.entity.RoleUsers" id="RoleUsersMap">
+        <result property="rId" column="r_id" jdbcType="INTEGER"/>
+        <result property="uId" column="u_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="RoleUsersMap">
+        select
+          r_id, u_id
+        from personnel.role_users
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="RoleUsersMap">
+        select
+          r_id, u_id
+        from personnel.role_users
+        <where>
+            <if test="rId != null">
+                and r_id = #{rId}
+            </if>
+            <if test="uId != null">
+                and u_id = #{uId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="" useGeneratedKeys="true">
+        insert into personnel.role_users(r_id, u_id)
+        values (#{rId}, #{uId})
+    </insert>
+
+
+
+
+</mapper>

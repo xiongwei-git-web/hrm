@@ -3,6 +3,7 @@ package com.controller;
 import com.entity.Notice;
 import com.github.pagehelper.PageInfo;
 import com.service.NoticeService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.taglibs.standard.extra.spath.Step;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,13 +29,13 @@ public class NoticeController {
      */
     @Resource
     private NoticeService noticeService;
-
     @RequestMapping("selectall")
    public  String  selectall(Model model,@RequestParam(required = false,defaultValue = "1") Integer pagenum, @RequestParam(required = false,defaultValue = "5")Integer pagesize){
         PageInfo<Notice> pageInfo=new PageInfo<>(noticeService.selectall(pagenum,pagesize));
         model.addAttribute("list",pageInfo);
         return "notice";
    }
+    @RequiresPermissions("notice:add")
    @RequestMapping("add")
    public  String  add(Notice notice, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
@@ -47,6 +48,7 @@ public class NoticeController {
             return "redirect:/notice/selectall";
         }
    }
+    @RequiresPermissions("notice:update")
    @RequestMapping("update")
    public  String update(Notice notice,HttpServletResponse response) throws IOException {
        response.setContentType("text/html;charset=utf-8");
@@ -60,6 +62,7 @@ public class NoticeController {
        }
    }
    @RequestMapping("delete")
+   @RequiresPermissions("notice:delete")
    @ResponseBody
     public String delete( Integer id,HttpServletResponse response){
        response.setContentType("text/html;charset=utf-8");
@@ -71,12 +74,14 @@ public class NoticeController {
               return "删除失败";
           }
     }
+    @RequiresPermissions("notice:select")
     @RequestMapping("selename")
     public  String selename(Notice notice,Model model,@RequestParam(required = false,defaultValue = "1") Integer pagenum, @RequestParam(required = false,defaultValue = "5")Integer pagesize){
         PageInfo<Notice> pageInfo=new PageInfo<>(noticeService.queryAll(notice,pagenum,pagesize));
         model.addAttribute("list",pageInfo);
         return "notice";
     }
+    @RequiresPermissions("notice:deletes")
     @RequestMapping("deletes")
     public  String deletes(Integer[] ids){
         try {

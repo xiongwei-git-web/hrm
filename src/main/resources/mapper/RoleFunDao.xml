@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.RoleFunDao">
+
+    <resultMap type="com.entity.RoleFun" id="RoleFunMap">
+        <result property="rId" column="r_id" jdbcType="INTEGER"/>
+        <result property="fId" column="f_id" jdbcType="INTEGER"/>
+        <result property="rfId" column="rf_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="RoleFunMap">
+        select
+          r_id, f_id, rf_id
+        from personnel.role_fun
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="RoleFunMap">
+        select
+          r_id, f_id, rf_id
+        from personnel.role_fun
+        <where>
+            <if test="rId != null">
+                and r_id = #{rId}
+            </if>
+            <if test="fId != null">
+                and f_id = #{fId}
+            </if>
+            <if test="rfId != null">
+                and rf_id = #{rfId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="" useGeneratedKeys="true">
+        insert into personnel.role_fun(r_id, f_id, rf_id)
+        values (#{rId}, #{fId}, #{rfId})
+    </insert>
+
+
+
+
+
+</mapper>

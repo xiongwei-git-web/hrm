@@ -5,6 +5,12 @@ package com.controller;
 import com.entity.Users;
 import com.github.pagehelper.PageInfo;
 import com.service.Userservice;
+import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,22 +37,21 @@ import java.util.List;
 public class UserController {
     @Autowired
     private Userservice userservice;
+
     @RequestMapping("login")
-    public void  login( String user, String pass,HttpSession session, HttpServletResponse response ,HttpServletRequest request) throws ServletException, IOException, ParseException {
-        Users users=userservice.login(user,pass);
-        if(users==null||"2".equals(users.getuState())) {
-            response.setContentType("text/html;charset=utf-8");
-            response.getWriter().print("<script>alert('登入失败');window.location.href='/login.jsp'</script>");
-            return;
+    public String  login(@Param("user") String user, @Param("pass") String pass) throws ServletException, IOException, ParseException {
+        UsernamePasswordToken token=new UsernamePasswordToken(user,pass);
+        Subject subject= SecurityUtils.getSubject();
+        try {
+                subject.login(token);
+                return "index";
+        }catch (AuthenticationException e){
+            e.printStackTrace();
+            return "redirect:/login.jsp";
         }
-         session.setAttribute("user",users);
-       request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
+
     }
-    @RequestMapping("quit")
-    public void quit(HttpSession session,HttpServletResponse response) throws IOException {
-        session.removeAttribute("user");
-       response.sendRedirect("/login.jsp");
-    }
+
     @RequestMapping("seleatall")
     public String seleatall(Model model, @RequestParam(required = false,defaultValue = "1") Integer pagenum,  @RequestParam(required = false,defaultValue = "5")Integer pagesize){
 
@@ -54,6 +59,7 @@ public class UserController {
         model.addAttribute("list",pageInfo);
         return "user";
     }
+    @RequiresPermissions("users:delete")
     @ResponseBody
     @RequestMapping("delete")
     public String delete(Integer id,HttpServletResponse response){
@@ -64,6 +70,7 @@ public class UserController {
         }
         return "删除失败";
     }
+    @RequiresPermissions("users:add")
     @RequestMapping("add")
     public  String  add(Users users,HttpServletResponse response) throws IOException, ParseException {
         response.setContentType("text/html;charset=utf-8");
@@ -81,6 +88,7 @@ public class UserController {
          }
 
     }
+    @RequiresPermissions("users:deletes")
     @RequestMapping("deletes")
     public String deletes(Integer [] ids ){
         try {
@@ -91,12 +99,14 @@ public class UserController {
             return "redirect:/user/seleatall";
         }
     }
+    @RequiresPermissions("users:select")
     @RequestMapping("selectname")
     public  String selectname(Users users,Model model,@RequestParam(required = false,defaultValue = "1") Integer pagenum,  @RequestParam(required = false,defaultValue = "5")Integer pagesize){
         PageInfo<Users> pageInfo=new PageInfo<>(userservice.selectname(users,pagenum,pagesize));
         model.addAttribute("list",pageInfo);
         return  "user";
     }
+    @RequiresPermissions("users:update")
     @RequestMapping("update")
     public  String   update(Users users,HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
